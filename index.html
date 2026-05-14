@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLBB Elite Shop - Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+
+    <div class="lang-switch">
+        <div class="lang-btn active" id="btn-mm" onclick="setLang('mm')">MM</div>
+        <div class="lang-btn" id="btn-en" onclick="setLang('en')">EN</div>
+    </div>
+
+    <div class="header">
+        <h1>MLBB Elite Shop</h1>
+        <p id="txt-subtitle">အမြန်ဆုံးနှင့် ယုံကြည်စိတ်ချရသော Top-up</p>
+    </div>
+
+    <div class="container">
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-num">1</div>
+                <div class="step-title" id="txt-step1">ဂိမ်းအကောင့် ထည့်ပါ</div>
+            </div>
+            <div class="input-row">
+                <div class="input-group">
+                    <input type="number" id="userId" class="input-field" placeholder="User ID">
+                    <div class="error-msg" id="userIdError">User ID လိုအပ်ပါသည်</div>
+                </div>
+                <div class="input-group">
+                    <input type="number" id="zoneId" class="input-field" placeholder="Zone ID">
+                    <div class="error-msg" id="zoneIdError">Zone ID လိုအပ်ပါသည်</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-num">2</div>
+                <div class="step-title" id="txt-step2">ပမာဏ ရွေးချယ်ပါ</div>
+            </div>
+            <div class="category-label" id="txt-cat1">Special Offers</div>
+            <div id="specialGrid" class="items-grid"></div>
+            <div class="category-label" id="txt-cat2">2X Diamonds</div>
+            <div id="doubleGrid" class="items-grid"></div>
+            <div class="category-label" id="txt-cat3">Normal Diamonds</div>
+            <div id="normalGrid" class="items-grid"></div>
+            <div class="error-msg" id="productError" style="margin-top: 15px; text-align: center;">ကျေးဇူးပြု၍ ပမာဏတစ်ခု ရွေးချယ်ပါ</div>
+        </div>
+
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-num">3</div>
+                <div class="step-title" id="txt-step3">ငွေပေးချေမှု</div>
+            </div>
+            <div id="paymentList"></div>
+            <div class="upload-box">
+                <input type="file" id="receiptImg" accept="image/*" onchange="previewImage(event)">
+                <div id="uploadContent" class="upload-content">
+                    <span style="font-size:30px;">📸</span><br>
+                    <span id="txt-upload">ငွေလွှဲပြေစာပုံ တင်ရန် နှိပ်ပါ</span>
+                </div>
+                <img id="imagePreview" class="image-preview">
+            </div>
+            <div class="error-msg" id="receiptError" style="text-align: center;">ကျေးဇူးပြု၍ ငွေလွှဲပြေစာ ပုံထည့်ပါ</div>
+        </div>
+
+        <div class="step-card" style="text-align: center;">
+            <div style="margin-bottom: 10px; font-size: 13px; color: var(--text-muted);">For Support & Inquiries</div>
+            <a id="contactLink" href="#" target="_blank" style="color: var(--primary-gold); text-decoration: none; font-weight: 800; font-size: 17px;">
+                <span id="contactText">Contact Admin (Telegram)</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="total-info">
+            <span id="txt-total" style="font-size:12px; color:var(--text-muted);">ကျသင့်ငွေ</span>
+            <span class="price" id="priceDisplay">0 Ks</span>
+        </div>
+        <button class="checkout-btn" id="txt-buyBtn" onclick="openConfirmation()">ဝယ်ယူမည်</button>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <div class="modal-header" id="txt-modTitle">အော်ဒါ အတည်ပြုခြင်း</div>
+            <div class="summary-item"><span>Player ID</span><span id="sumId"></span></div>
+            <div class="summary-item"><span>Item</span><span id="sumProduct"></span></div>
+            <div class="summary-item" style="border:none;"><span>Price</span><span id="sumPrice" style="color:var(--primary-gold); font-weight:800;"></span></div>
+            <img id="modalImgPreview" class="modal-img-preview">
+            <div class="modal-btns">
+                <button class="modal-btn btn-cancel" id="txt-modCancel" onclick="closeModal()">Cancel</button>
+                <button class="modal-btn btn-confirm" id="txt-modConfirm" onclick="submitFinalOrder()">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="successOverlay">
+        <div class="success-card">
+            <div class="success-icon-wrap"><svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg></div>
+            <h2 id="txt-succTitle">Success!</h2>
+            <p id="txt-succDesc">အော်ဒါတင်ခြင်း အောင်မြင်ပါသည်။</p>
+            <button class="modal-btn" style="background:var(--success-green); color:white; width:100%;" onclick="closeSuccess()">OK</button>
+        </div>
+    </div>
+
+    <div id="toast">📋 <span id="txt-toast">Copied!</span></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
